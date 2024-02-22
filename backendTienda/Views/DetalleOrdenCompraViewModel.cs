@@ -6,5 +6,7 @@ public class DetalleOrdenCompraViewModel
     public int OrdenCompraId { get; set; }
 
     [Required(ErrorMessage = "Al menos un artículo es obligatorio")]
-    public List<int> ArticuloIds { get; set; }
+    public required List<Articulo> ListaArticulos { get; set; }
+
+    public int Cantidad { get; set; }
 }

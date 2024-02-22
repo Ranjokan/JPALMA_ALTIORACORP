@@ -9,6 +9,10 @@ public class MappingProfile : Profile
 
         CreateMap<ArticuloViewModel, Articulo>();
         CreateMap<Articulo, ArticuloViewModel>();
+
+        CreateMap<OrdenCompraViewModel, OrdenCompra>();
+        CreateMap<OrdenCompra, OrdenCompraViewModel>();
+
     }
 
 }

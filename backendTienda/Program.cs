@@ -8,11 +8,11 @@ class Program
         using var context = new AppDbContext();
         // Agregar un nuevo cliente
         var nuevoCliente = new Cliente { NOMBRE = "Jacinto", APELLIDO = "Palma", DNI = "1315081685" };
-        context.Cliente.Add(nuevoCliente);       
+        context.Clientes.Add(nuevoCliente);       
         context.SaveChanges();
 
         // Consultar clientes
-        var clientes = context.Cliente.ToList();
+        var clientes = context.Clientes.ToList();
         foreach (var cliente in clientes)
         {
             Console.WriteLine($"ID: {cliente.CLIENTE_ID}, Nombre: {cliente.NOMBRE}, Apellido: {cliente.APELLIDO}, DNI: {cliente.DNI}");

@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "zclCFytoP9rSbtoa/9LHbr87C2enCuhrFjhwxigEBdQ=",
+  "Source": "backendTienda",
+  "BasePath": "_content/backendTienda",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

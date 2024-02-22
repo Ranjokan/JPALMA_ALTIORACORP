@@ -9,6 +9,17 @@ public class Cliente
     public required string NOMBRE { get; set; }
     public required string APELLIDO { get; set; }
     public required string DNI { get; set; }
+    public ICollection<OrdenCompra> OrdenCompra { get => ordenCompra; set => ordenCompra = value; }
 
-    //public virtual ICollection<OrdenCompra> OrdenesCompra { get; set; }
+    private ICollection<OrdenCompra> ordenCompra;
+
+    public virtual ICollection<OrdenCompra> GetOrdenCompra()
+    {
+        return OrdenCompra;
+    }
+
+    public virtual void SetOrdenCompra(ICollection<OrdenCompra> value)
+    {
+        OrdenCompra = value;
+    }
 }

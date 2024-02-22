@@ -10,6 +10,4 @@ public class OrdenCompra
     public required int CLIENTE_ID { get; set; }
 
     public required DateTime FECHA_COMPRA { get; set; }
-
-    public virtual required Cliente Cliente { get; set; }
 }

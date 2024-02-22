@@ -8,7 +8,7 @@ public class MappingProfile : Profile
         CreateMap<Cliente, ClienteViewModel>();
 
         CreateMap<ArticuloViewModel, Articulo>();
-        CreateMap<Cliente, ClienteViewModel>();
+        CreateMap<Articulo, ArticuloViewModel>();
     }
 
 }

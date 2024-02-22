@@ -1,0 +1,17 @@
+<!-- ingresar-cliente.component.html -->
+<form [formGroup]="clienteForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="nombre">Nombre:</label>
+      <input type="text" id="nombre" formControlName="nombre">
+    </div>
+    <div>
+      <label for="apellido">Apellido:</label>
+      <input type="text" id="apellido" formControlName="apellido">
+    </div>
+    <div>
+      <label for="dni">DNI:</label>
+      <input type="text" id="dni" formControlName="dni">
+    </div>
+    <button type="submit" [disabled]="clienteForm.invalid">Guardar Cliente</button>
+  </form>
+  

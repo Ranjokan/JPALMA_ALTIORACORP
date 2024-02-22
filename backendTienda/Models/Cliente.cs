@@ -10,5 +10,5 @@ public class Cliente
     public required string APELLIDO { get; set; }
     public required string DNI { get; set; }
 
-    public virtual ICollection<OrdenCompra> OrdenesCompra { get; set; }
+    //public virtual ICollection<OrdenCompra> OrdenesCompra { get; set; }
 }

@@ -1,23 +1,30 @@
 // Controllers/ClienteController.cs
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("api/clientes")]
 [ApiController]
 public class ClienteController : ControllerBase
 {
-    private readonly ClienteRepository _clienteRepository;
+    private readonly IClienteRepository _clienteRepository;
+    private readonly IMapper _mapper;
 
-    public ClienteController(ClienteRepository clienteRepository)
+
+     public ClienteController(IClienteRepository clienteRepository, IMapper mapper)
     {
         _clienteRepository = clienteRepository;
+        _mapper = mapper;
     }
 
-    [HttpPost]
-    public ActionResult<Cliente> IngresarCliente([FromBody] Cliente nuevoCliente)
+    [HttpPost("/ingresarCliente")]
+    public IActionResult IngresarCliente([FromBody] ClienteViewModel nuevoCliente)
     {
+        ArgumentNullException.ThrowIfNull(nuevoCliente);
+
         try
         {
-            var clienteIngresado = _clienteRepository.IngresarCliente(nuevoCliente);
+            var cliente = _mapper.Map<Cliente>(nuevoCliente);
+            var clienteIngresado = _clienteRepository.IngresarCliente(cliente);
             return Ok(clienteIngresado);
         }
         catch (InvalidOperationException ex)
@@ -48,7 +55,7 @@ public class ClienteController : ControllerBase
         }
     }
 
-    [HttpGet("{dni}")]
+    [HttpGet("/obtenerClienteDni{dni}")]
     public ActionResult<Cliente> ObtenerClientePorDNI(string dni)
     {
         try
@@ -93,4 +100,6 @@ public class ClienteController : ControllerBase
             return BadRequest($"Error al eliminar el cliente: {ex.Message}");
         }
     }
+
+   
 }

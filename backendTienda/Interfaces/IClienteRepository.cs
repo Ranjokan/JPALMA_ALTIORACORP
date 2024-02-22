@@ -5,5 +5,5 @@ public interface IClienteRepository
     Cliente ObtenerClientePorDNI(string dni);
     Cliente IngresarCliente(Cliente nuevoCliente);
     Cliente ModificarCliente(string dni, Cliente clienteActualizado);
-    void EliminarCliente(string dni);
+    Cliente EliminarCliente(Cliente clienteEliminar);
 }

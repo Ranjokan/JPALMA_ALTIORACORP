@@ -18,6 +18,11 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddScoped<IClienteRepository, ClienteRepository>();
+        services.AddScoped<ClienteService>();
+
+        services.AddScoped<IArticuloRepository, ArticuloRepository>();
+        services.AddScoped<ArticuloService>();
+
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         services.AddCors(options =>
     {

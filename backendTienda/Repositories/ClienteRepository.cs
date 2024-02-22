@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
-public class ClienteRepository: IClienteRepository
+public class ClienteRepository : IClienteRepository
 {
     private readonly AppDbContext _context;
 
@@ -17,18 +17,18 @@ public class ClienteRepository: IClienteRepository
     {
         try
         {
-            if (_context.Clientes.Any(c => c.DNI.Equals(nuevoCliente.DNI)))
+            if (_context.Cliente.Any(c => c.DNI.Equals(nuevoCliente.DNI)))
             {
                 throw new InvalidOperationException("Ya existe un cliente con ese DNI.");
             }
 
-            _context.Clientes.Add(nuevoCliente);
+            _context.Cliente.Add(nuevoCliente);
             _context.SaveChanges();
             return nuevoCliente;
         }
         catch (Exception ex)
         {
-           
+
             throw new Exception("Error al ingresar el cliente.", ex);
         }
     }
@@ -37,7 +37,7 @@ public class ClienteRepository: IClienteRepository
     {
         try
         {
-            var clienteExistente = _context.Clientes.FirstOrDefault(c => c.DNI.Equals(dni));
+            var clienteExistente = _context.Cliente.FirstOrDefault(c => c.DNI.Equals(dni));
             if (clienteExistente != null)
             {
                 clienteExistente.NOMBRE = clienteActualizado.NOMBRE;
@@ -50,7 +50,7 @@ public class ClienteRepository: IClienteRepository
         }
         catch (Exception ex)
         {
-           
+
             throw new Exception("Error al modificar el cliente.", ex);
         }
     }
@@ -59,11 +59,11 @@ public class ClienteRepository: IClienteRepository
     {
         try
         {
-            return _context.Clientes.FirstOrDefault(c => c.DNI.Equals(dni));
+            return _context.Cliente.FirstOrDefault(c => c.DNI == dni);
         }
         catch (Exception ex)
         {
-          
+
             throw new Exception("Error al obtener el cliente por DNI.", ex);
         }
     }
@@ -72,30 +72,30 @@ public class ClienteRepository: IClienteRepository
     {
         try
         {
-            return _context.Clientes.ToList();
+            return _context.Cliente.ToList();
         }
         catch (Exception ex)
         {
-           
+
             throw new Exception("Error al obtener todos los clientes.", ex);
         }
     }
 
-    public void EliminarCliente(string dni)
+    public Cliente EliminarCliente(Cliente clienteEliminar)
     {
         try
         {
-            var clienteExistente = _context.Clientes.FirstOrDefault(c => c.DNI.Equals(dni));
-            if (clienteExistente != null)
-            {
-                _context.Clientes.Remove(clienteExistente);
-                _context.SaveChanges();
-            }
+            _context.Cliente.Remove(clienteEliminar);
+            _context.SaveChanges();
+            return clienteEliminar;
+
         }
         catch (Exception ex)
         {
-           
+
             throw new Exception("Error al eliminar el cliente.", ex);
         }
     }
 }
+
+

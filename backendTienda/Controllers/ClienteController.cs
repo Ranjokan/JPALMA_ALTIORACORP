@@ -1,105 +1,83 @@
-// Controllers/ClienteController.cs
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("api/clientes")]
 [ApiController]
 public class ClienteController : ControllerBase
 {
-    private readonly IClienteRepository _clienteRepository;
-    private readonly IMapper _mapper;
+    private readonly ClienteService _clienteService;
 
-
-     public ClienteController(IClienteRepository clienteRepository, IMapper mapper)
+    public ClienteController(ClienteService clienteService)
     {
-        _clienteRepository = clienteRepository;
-        _mapper = mapper;
+        _clienteService = clienteService;
     }
 
-    [HttpPost("/ingresarCliente")]
-    public IActionResult IngresarCliente([FromBody] ClienteViewModel nuevoCliente)
+    [HttpGet]
+    public IActionResult ObtenerTodosClientes()
     {
-        ArgumentNullException.ThrowIfNull(nuevoCliente);
+        var clientes = _clienteService.ObtenerTodosClientes();
+        return Ok(clientes);
+    }
 
+    [HttpGet("{dni}")]
+    public IActionResult ObtenerClientePorDNI(string dni)
+    {
+        var cliente = _clienteService.ObtenerClientePorDNI(dni);
+
+        if (cliente == null)
+        {
+            return NotFound($"No se encontró el cliente con DNI {dni}");
+        }
+
+        return Ok(cliente);
+    }
+
+    [HttpPost(Name = "IngresarCliente")]
+    public IActionResult IngresarCliente([FromBody] ClienteViewModel clienteViewModel)
+    {
         try
         {
-            var cliente = _mapper.Map<Cliente>(nuevoCliente);
-            var clienteIngresado = _clienteRepository.IngresarCliente(cliente);
-            return Ok(clienteIngresado);
+            _clienteService.IngresarCliente(clienteViewModel);
+            return CreatedAtRoute("IngresarCliente", clienteViewModel);
         }
-        catch (InvalidOperationException ex)
+        catch (ArgumentNullException ex)
         {
             return BadRequest(ex.Message);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest($"Error al ingresar el cliente: {ex.Message}");
         }
     }
 
     [HttpPut("{dni}")]
-    public ActionResult<Cliente> ModificarCliente(string dni, [FromBody] Cliente clienteActualizado)
+    public IActionResult ModificarCliente(string dni, [FromBody] ClienteViewModel clienteViewModel)
     {
         try
         {
-            var clienteModificado = _clienteRepository.ModificarCliente(dni, clienteActualizado);
-            if (clienteModificado == null)
-            {
-                return NotFound();
-            }
-            return Ok(clienteModificado);
+            _clienteService.ModificarCliente(dni, clienteViewModel);
+            return Ok();
         }
-        catch (Exception ex)
+        catch (ArgumentNullException ex)
         {
-            return BadRequest($"Error al modificar el cliente: {ex.Message}");
+            return BadRequest(ex.Message);
         }
-    }
-
-    [HttpGet("/obtenerClienteDni{dni}")]
-    public ActionResult<Cliente> ObtenerClientePorDNI(string dni)
-    {
-        try
+        catch (InvalidOperationException ex)
         {
-            var cliente = _clienteRepository.ObtenerClientePorDNI(dni);
-            if (cliente == null)
-            {
-                return NotFound();
-            }
-            return Ok(cliente);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest($"Error al obtener el cliente por DNI: {ex.Message}");
-        }
-    }
-
-    [HttpGet]
-    public ActionResult<List<Cliente>> ObtenerTodosClientes()
-    {
-        try
-        {
-            var clientes = _clienteRepository.ObtenerTodosClientes();
-            return Ok(clientes);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest($"Error al obtener todos los clientes: {ex.Message}");
+            return NotFound(ex.Message);
         }
     }
 
     [HttpDelete("{dni}")]
-    public ActionResult EliminarCliente(string dni)
+    public IActionResult EliminarCliente(string dni)
     {
         try
         {
-            _clienteRepository.EliminarCliente(dni);
-            return NoContent();
+            _clienteService.EliminarCliente(dni);
+            return Ok();
         }
-        catch (Exception ex)
+        catch (ArgumentNullException ex)
         {
-            return BadRequest($"Error al eliminar el cliente: {ex.Message}");
+            return BadRequest(ex.Message);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return NotFound(ex.Message);
         }
     }
-
-   
 }

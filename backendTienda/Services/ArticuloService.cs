@@ -11,15 +11,15 @@ public class ArticuloService
         _mapper = mapper;
     }
 
-    public List<ArticuloViewModel> ObtenerTodosarticulos()
+    public List<ArticuloViewModel> ObtenerTodosArticulos()
     {
-        var articulos = _articuloRepository.ObtenerTodosarticulos();
+        var articulos = _articuloRepository.ObtenerTodosArticulos();
         return _mapper.Map<List<ArticuloViewModel>>(articulos);
     }
 
-    public ArticuloViewModel ObtenerarticuloPorDNI(string dni)
+    public ArticuloViewModel ObtenerArticuloPorCodigo(string codigoArticulo)
     {
-        var articulo = _articuloRepository.ObtenerarticuloPorDNI(dni);
+        var articulo = _articuloRepository.ObtenerArticuloPorCodigo(codigoArticulo);
         return _mapper.Map<ArticuloViewModel>(articulo);
     }
 
@@ -35,38 +35,24 @@ public class ArticuloService
         return ArticuloViewModel;
     }
 
-    public ArticuloViewModel Modificararticulo(string dni, ArticuloViewModel ArticuloViewModel)
+    public ArticuloViewModel Modificararticulo(string codigoArticulo, ArticuloViewModel ArticuloViewModel)
     {
         if (ArticuloViewModel == null)
         {
             throw new ArgumentNullException(nameof(ArticuloViewModel), "El modelo de vista del articulo no puede ser nulo.");
         }
 
-        var articuloExistente = _articuloRepository.ObtenerarticuloPorDNI(dni);
+        var articuloExistente = _articuloRepository.ObtenerArticuloPorCodigo(codigoArticulo);
 
         if (articuloExistente == null)
         {
-            throw new InvalidOperationException($"No se encontró el articulo con DNI {dni}");
+            throw new InvalidOperationException($"No se encontró el articulo con codigo {codigoArticulo}");
         }
 
         _mapper.Map(ArticuloViewModel, articuloExistente);
-        _articuloRepository.Modificararticulo(dni,articuloExistente);
+        _articuloRepository.ModificarArticulo(codigoArticulo,articuloExistente);
         return ArticuloViewModel;
     }
 
-public ArticuloViewModel Eliminararticulo(string dni)
-    {
-        ArticuloViewModel articuloEliminado = new();
-        var articuloExistente = _articuloRepository.ObtenerarticuloPorDNI(dni);
-
-        if (articuloExistente == null)
-        {
-            throw new InvalidOperationException($"No se encontró el articulo con DNI {dni}");
-        }
-
-        _articuloRepository.Eliminararticulo(articuloExistente);
-        _mapper.Map(articuloExistente,articuloEliminado);
-        return articuloEliminado;
-    }
     
 }

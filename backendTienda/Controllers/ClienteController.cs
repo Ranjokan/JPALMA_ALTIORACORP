@@ -14,14 +14,24 @@ public class ClienteController : ControllerBase
     [HttpGet]
     public IActionResult ObtenerTodosClientes()
     {
-        var clientes = _clienteService.ObtenerTodosClientes();
-        return Ok(clientes);
+        try
+        {
+            var clientes = _clienteService.ObtenerTodosClientes();
+            return Ok(clientes);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+        }
+
     }
 
     [HttpGet("{dni}")]
     public IActionResult ObtenerClientePorDNI(string dni)
     {
-        var cliente = _clienteService.ObtenerClientePorDNI(dni);
+        try
+        {
+             var cliente = _clienteService.ObtenerClientePorDNI(dni);
 
         if (cliente == null)
         {
@@ -29,6 +39,12 @@ public class ClienteController : ControllerBase
         }
 
         return Ok(cliente);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+        }
+       
     }
 
     [HttpPost(Name = "IngresarCliente")]

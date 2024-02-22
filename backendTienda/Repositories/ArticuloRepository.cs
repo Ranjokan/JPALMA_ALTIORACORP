@@ -11,31 +11,71 @@ public class ArticuloRepository : IArticuloRepository
         _context = context;
     }
 
-    public IEnumerable<Articulo> ObtenerTodosArticulos()
+    public List<Articulo> ObtenerTodosArticulos()
     {
-        return _context.Articulos.ToList();
+        try
+        {
+            return _context.Articulo.ToList();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Error al obtener todos los articulos.", ex);
+        }
+
     }
 
-    public Articulo ObtenerArticuloPorId(int articuloId)
+    public Articulo ObtenerArticuloPorCodigo(string codigoArticulo)
     {
-        return _context.Articulos.FirstOrDefault(a => a.ARTICULO_ID.Equals(articuloId));
+        try
+        {
+            return _context.Articulo.FirstOrDefault(a => a.CODIGO_ARTICULO.Equals(codigoArticulo));
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Error al obtener el articulo por ID.", ex);
+        }
+
     }
 
     public Articulo IngresarArticulo(Articulo articulo)
     {
-        _context.Articulos.Add(articulo);
-        _context.SaveChanges();
-        return articulo;
+        try
+        {
+            if (_context.Articulo.Any(c => c.CODIGO_ARTICULO.Equals(articulo.CODIGO_ARTICULO)))
+            {
+                throw new InvalidOperationException("Ya existe un articulo con ese Codigo.");
+            }
+            _context.Articulo.Add(articulo);
+            _context.SaveChanges();
+            return articulo;
+        }
+        catch (System.Exception)
+        {
+
+            throw;
+        }
+
     }
 
-    public void ModificarArticulo(Articulo articulo)
+    public Articulo ModificarArticulo(string codigoArticulo, Articulo articulo)
     {
-        _context.Articulos.Update(articulo);
-        _context.SaveChanges();
+        try
+        {
+            var articuloExistente = _context.Articulo.FirstOrDefault(c => c.CODIGO_ARTICULO.Equals(codigoArticulo));
+            if (articuloExistente != null)
+            {
+                _context.Articulo.Update(articulo);
+                _context.SaveChanges();
+            }
+
+            return articulo;
+        }
+        catch (Exception ex)
+        {
+
+            throw new Exception("Error al modificar el articulo.", ex);
+        }
+
     }
 
-    List<Articulo> IArticuloRepository.ObtenerTodosArticulos()
-    {
-        throw new NotImplementedException();
-    }
 }

@@ -40,13 +40,11 @@ public class ClienteRepository : IClienteRepository
             var clienteExistente = _context.Cliente.FirstOrDefault(c => c.DNI.Equals(dni));
             if (clienteExistente != null)
             {
-                clienteExistente.NOMBRE = clienteActualizado.NOMBRE;
-                clienteExistente.APELLIDO = clienteActualizado.APELLIDO;
-                clienteExistente.DNI = clienteActualizado.DNI;
+                _context.Cliente.Update(clienteActualizado);
 
                 _context.SaveChanges();
             }
-            return clienteExistente;
+            return clienteActualizado;
         }
         catch (Exception ex)
         {

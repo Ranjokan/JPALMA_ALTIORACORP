@@ -1,8 +1,8 @@
 public interface IArticuloRepository
 {
     List<Articulo> ObtenerTodosArticulos();
-    Articulo ObtenerArticuloPorId(int articuloId);
+    Articulo ObtenerArticuloPorCodigo (string idArticulo);
     Articulo IngresarArticulo(Articulo articulo);
-    void ModificarArticulo(Articulo articulo);
+    Articulo ModificarArticulo(string idArticulo, Articulo articulo);
    
 }

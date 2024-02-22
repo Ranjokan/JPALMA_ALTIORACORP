@@ -9,3 +9,18 @@
 
  #Frontend
  El frontend se ha desarrollado usando Angular 16 para la visualización de una pantalla simple que permita hacer el CRUD correspondiente.
+
+#Consideraciones Adicionales
+* Cambio de la cadena de conexión correspondiente, actualmente usa la de Autenticación de Windows
+* Instalado Angular y .NET
+* Ejecutar los scripts adjuntos
+* Uso de POSTMAN para consumo de servicios
+
+#Funcionalidades
+* CRUD de Clientes
+* CRUD de Articulos
+
+#Errores existentes
+* Finalizar la inserción de la Orden de Compra
+* Conexión con front de los servicios - Corregir enrutamiento para hacer el correcto consumo de los servicios
+  
